@@ -33,7 +33,7 @@ class TasksFragment : Fragment() {
         binding.tasksList.adapter = adapter
 
         viewModel.tasks.observe(viewLifecycleOwner) { newData ->
-            adapter.data = newData
+            adapter.submitList(newData)
         }
 
         return view
