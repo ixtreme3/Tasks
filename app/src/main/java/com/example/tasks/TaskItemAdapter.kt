@@ -7,7 +7,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.tasks.databinding.TaskItemBinding
 import com.example.tasks.db.entity.Task
 
-class TaskItemAdapter :
+
+class TaskItemAdapter(private val clickListener: (taskId: Long) -> Unit) :
     ListAdapter<Task, TaskItemAdapter.TaskItemViewHolder>(TaskDiffItemCallback()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskItemViewHolder {
         return TaskItemViewHolder.inflateFrom(parent)
@@ -15,14 +16,17 @@ class TaskItemAdapter :
 
     override fun onBindViewHolder(holder: TaskItemViewHolder, position: Int) {
         val item = getItem(position)
-        holder.bind(item)
+        holder.bind(item, clickListener)
     }
 
     class TaskItemViewHolder(private val binding: TaskItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: Task) {
+        fun bind(item: Task, clickListener: (taskId: Long) -> Unit) {
             binding.task = item
+            binding.root.setOnClickListener {
+                clickListener(item.taskId)
+            }
         }
 
         companion object {
